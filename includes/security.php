@@ -14,7 +14,7 @@ function yawsp_logger($data, $file_path) {
 */
 
 /* Disable the REST API endpoints wp-json/wp/v2/users. */
-function disable_users_endpoint_in_rest_api( $endpoints ) {
+function yawsp_disable_users_endpoint_in_rest_api( $endpoints ) {
     if ( isset( $endpoints['/wp/v2/users'] ) ) {
         unset( $endpoints['/wp/v2/users'] );
     }
@@ -23,10 +23,10 @@ function disable_users_endpoint_in_rest_api( $endpoints ) {
     }
     return $endpoints;
 }
-add_filter('rest_endpoints', 'disable_users_endpoint_in_rest_api');
+add_filter('rest_endpoints', 'yawsp_disable_users_endpoint_in_rest_api');
 
 /* Prevent user enumeration via URL /?author=1 by disabling author archives completely (https://wp-mix.com/wordpress-disable-author-archives/) */
-function disable_author_archives() {
+function yawsp_disable_author_archives() {
 	if (is_author()) {
 		global $wp_query;
 		$wp_query->set_404();
@@ -36,7 +36,7 @@ function disable_author_archives() {
 	}
 }
 remove_filter('template_redirect', 'redirect_canonical');
-add_action('template_redirect', 'disable_author_archives');
+add_action('template_redirect', 'yawsp_disable_author_archives');
 
 
 /* ##################
@@ -45,7 +45,7 @@ add_action('template_redirect', 'disable_author_archives');
 */
 
 // Use the "website" field in a comment as honeypot. It is set to display:none via css, so that "normal" users do not enter text there.*/
-function create_spam_comment_honeypot(array $data){
+function yawsp_create_spam_comment_honeypot(array $data){
 	if(empty($data['comment_author_url'])) {
 		return $data;
 	} else {
@@ -57,7 +57,7 @@ function create_spam_comment_honeypot(array $data){
 		exit(0);
 	}
 } 
-add_filter('preprocess_comment','create_spam_comment_honeypot'); 
+add_filter('preprocess_comment','yawsp_create_spam_comment_honeypot'); 
 
 /* ##################
  Remove IPs from comments 
@@ -65,7 +65,7 @@ add_filter('preprocess_comment','create_spam_comment_honeypot');
 */
 
 // Replace a comment's IP address with "127.0.0.1" when the comment is approved or classified as spam.
-function remove_ip_from_comment_on_approval($new_status, $old_status, $comment) {
+function yawsp_remove_ip_from_comment_on_approval($new_status, $old_status, $comment) {
 	if(($old_status != $new_status) && ($new_status == 'approved' || $new_status == 'spam')) {
 		$modifiedComment = array();
 		$modifiedComment['comment_ID'] = $comment->comment_ID;
@@ -73,21 +73,21 @@ function remove_ip_from_comment_on_approval($new_status, $old_status, $comment) 
 		wp_update_comment($modifiedComment);
 	}
 }
-add_action('transition_comment_status', 'remove_ip_from_comment_on_approval', 10, 3);
+add_action('transition_comment_status', 'yawsp_remove_ip_from_comment_on_approval', 10, 3);
 
 
 /* ##################
  Log successfull and failed logins 
 ##################
 */
-function login_failed_logger($username) {
+function yawsp_login_failed_logger($username) {
 	yawsp_logger("$username - authentication failure for ".admin_url(), YAWSP_LOG_DIRECTORY . "logins_failed.log");
 }
-add_action('wp_login_failed', 'login_failed_logger');
+add_action('wp_login_failed', 'yawsp_login_failed_logger');
 
-function login_successful_logger($username) {
-	yawsp_logger("$username - login", YAWSP_LOG_DIRECTORY . "logins.log");
+function yawsp_login_successful_logger($username) {
+	yawsp_logger("$username - login", YAWSP_LOG_DIRECTORY . "logins_successfull.log");
 }
-add_action('wp_login', 'login_successful_logger');
+add_action('wp_login', 'yawsp_login_successful_logger');
 
 ?>

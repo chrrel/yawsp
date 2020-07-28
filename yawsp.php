@@ -18,3 +18,10 @@ require_once YAWSP_PATH . 'includes/security.php';
 require_once YAWSP_PATH . 'includes/privacy.php';
 
 require_once YAWSP_PATH . 'includes/admin.php';
+
+
+ define( 'WP_DEBUG', true );
+
+#####
+# Datei-Editoren deaktivieren
+#define( 'DISALLOW_FILE_EDIT', true );

@@ -1,9 +1,9 @@
 <?php
 // Create settings page
-function myplugin_register_options_page() {
+function yawsp_register_options_page() {
 	add_options_page('YAWSP', 'YAWSP', 'manage_options', 'yawsp', 'yawsp_options_page');
 }
-add_action('admin_menu', 'myplugin_register_options_page');
+add_action('admin_menu', 'yawsp_register_options_page');
 
 function yawsp_options_page() {
 ?>
@@ -27,17 +27,17 @@ function yawsp_options_page() {
 }
 
 // Link to settings page from plugins screen
-add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'add_action_links' );
-function add_action_links ( $links ) {
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'yawsp_add_action_links' );
+function yawsp_add_action_links ( $links ) {
     $mylinks = array(
         '<a href="' . admin_url( 'options-general.php?page=yawsp' ) . '">' . __( 'Settings' ) .' </a>',
     );
     return array_merge( $links, $mylinks );
 }
 
-function myplugin_register_settings() {
+function yawsp_register_settings() {
 	add_option( 'myplugin_option_name', 'This is my option value.');
 	register_setting( 'myplugin_options_group', 'myplugin_option_name', 'myplugin_callback' );
  }
- add_action( 'admin_init', 'myplugin_register_settings' );
+ add_action( 'admin_init', 'yawsp_register_settings' );
 ?>
