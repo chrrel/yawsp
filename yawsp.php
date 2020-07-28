@@ -15,4 +15,4 @@ define('YAWSP_LOG_DIRECTORY', YAWSP_PATH . "log/");
 
 # Include the security module
 require_once YAWSP_PATH . 'includes/security.php';
-
+require_once YAWSP_PATH . 'includes/privacy.php';
