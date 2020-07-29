@@ -48,7 +48,7 @@ function yawsp_options_page() {
 /**
  * Add a link to the settings page from plugins screen.
  */
-add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'yawsp_add_action_links' );
+add_filter( 'plugin_action_links_' . YAWSP_BASENAME, 'yawsp_add_action_links' );
 function yawsp_add_action_links ( $links ) {
     $mylinks = array(
         '<a href="' . admin_url( 'options-general.php?page=yawsp' ) . '">' . __( 'Settings' ) .' </a>',
