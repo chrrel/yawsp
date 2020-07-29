@@ -1,4 +1,4 @@
-# YAWSP -- Yet Another Wordpress Security Plugin
+# YAWSP - Yet Another Wordpress Security Plugin
 
 YAWSP is a minimal plugin for enhancing security and privacy of WordPress websites.
 
@@ -12,7 +12,7 @@ YAWSP is a minimal plugin for enhancing security and privacy of WordPress websit
 * Prevent users from editing source code files using the built-in file editor.
 
 ### Privacy Improvements
-* Gravatar (used to show avatars for comments) is disabled. Instead, local images based are shown.
+* Gravatar (used to show avatars for comments) is disabled. Instead, local images are shown.
 * Remove cookie consent field in comments so that no cookies are to be saved.
 * Replace a comment's IP address with "127.0.0.1" when the comment is approved or classified as spam.
 * Replace embedded YouTube videos with youtube-nocookie.com embedds.

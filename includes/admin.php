@@ -33,7 +33,7 @@ function yawsp_options_page() {
 		</ol>
 		<h4>Privacy Improvements</h4>
 		<ol>
-			<li>Gravatar (used to show avatars for comments) is disabled. Instead, local images based are shown.</li>
+			<li>Gravatar (used to show avatars for comments) is disabled. Instead, local images are shown.</li>
 			<li>Remove cookie consent field in comments so that no cookies are to be saved.</li>
 			<li>Replace a comment's IP address with "127.0.0.1" when the comment is approved or classified as spam.</li>
 			<li>Replace embedded YouTube videos with youtube-nocookie.com embedds.</li>
