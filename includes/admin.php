@@ -2,7 +2,7 @@
 /**
  * This module provides the admin interface for the WordPress backend.
  *
- * @since  1.0
+ * @since 1.0
  */
 
 /**
@@ -48,12 +48,12 @@ function yawsp_options_page() {
 /**
  * Add a link to the settings page from plugins screen.
  */
-add_filter( 'plugin_action_links_' . YAWSP_BASENAME, 'yawsp_add_action_links' );
-function yawsp_add_action_links ( $links ) {
-    $mylinks = array(
-        '<a href="' . admin_url( 'options-general.php?page=yawsp' ) . '">' . __( 'Settings' ) .' </a>',
-    );
-    return array_merge( $links, $mylinks );
+add_filter('plugin_action_links_' . YAWSP_BASENAME, 'yawsp_add_action_links');
+function yawsp_add_action_links($links) {
+	$mylinks = array(
+		'<a href="' . admin_url( 'options-general.php?page=yawsp' ) . '">' . __('Settings') .' </a>',
+	);
+	return array_merge($links, $mylinks);
 }
 
 ?>

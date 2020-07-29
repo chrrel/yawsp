@@ -31,8 +31,7 @@ defined('ABSPATH') or die('Stop here.');
 /* Define plugin constants */
 define('YAWSP_PATH', plugin_dir_path(__FILE__));
 define('YAWSP_BASENAME', plugin_basename(__FILE__)); 
-define('YAWSP_LOG_DIRECTORY', YAWSP_PATH . "log/"); 
-
+define('YAWSP_LOG_DIRECTORY', YAWSP_PATH . 'log/'); 
 
 /* Load all features from the corresponding modules */
 require_once YAWSP_PATH . 'includes/security.php';
