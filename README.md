@@ -10,6 +10,7 @@ YAWSP is a minimal plugin for enhancing security and privacy of WordPress websit
 * Create an anti-spam honeypot: Set the "website" field for comments as an invisible field that must not be filled.
 * Log failed and successfull logins to the WordPress backend to log files.
 * Prevent users from editing source code files using the built-in file editor.
+* Add HTTP Security Headers
 
 ### Privacy Improvements
 * Gravatar (used to show avatars for comments) is disabled. Instead, local images are shown.
