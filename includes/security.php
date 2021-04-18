@@ -95,4 +95,19 @@ add_action('wp_login', 'yawsp_login_successful_logger');
  */
 define('DISALLOW_FILE_EDIT', true);
 
+/**
+ * Add HTTP security headers.
+ */
+function yawsp_enable_http_security_headers($headers) {
+	$headers['X-Frame-Options'] = 'deny';
+	$headers['X-XSS-Protection'] = '1; mode=block';
+	$headers['X-Content-Type-Options'] = 'nosniff';
+	$headers['Referrer-Policy'] = 'strict-origin-when-cross-origin';
+	if (!empty($_SERVER['HTTPS'])) {
+		$headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains';
+	}
+	return $headers;
+}
+add_filter('wp_headers', 'yawsp_enable_http_security_headers');
+
 ?>
