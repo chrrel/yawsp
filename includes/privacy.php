@@ -12,7 +12,7 @@
  * The avatar is chosen based on the hash value of the commenter's email address.
  */
 function yawsp_replace_gravatar_with_own_images($url, $id_or_email, $args) {
-	if ($id_or_email == intval($id_or_email)) {
+	if(is_object($id_or_email) && isset($id_or_email->comment_ID)) {
 		$comment = get_comment($id_or_email);
 		$email = $comment->comment_author_email;
 	}
