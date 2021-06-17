@@ -12,12 +12,37 @@
  * The avatar is chosen based on the hash value of the commenter's email address.
  */
 function yawsp_replace_gravatar_with_own_images($url, $id_or_email, $args) {
-	if(is_object($id_or_email) && isset($id_or_email->comment_ID)) {
-		$comment = get_comment($id_or_email);
-		$email = $comment->comment_author_email;
+	if(is_numeric($id_or_email)) {
+		$id = (int) $id_or_email;
+		# by user_id
+		if(!empty(get_user_by('id', $id)->user_email)) {
+			$email = get_user_by('id', $id)->user_email;
+		}
+		# by comment_ID
+		else {
+			$email = get_comment($id)->comment_author_email;
+		}
 	}
-	else {
+	# by WP_User object
+	else if(is_a($id_or_email, 'WP_User')) {
+		$email = $id_or_email->user_email;
+	}
+	# by WP_Comment object
+	else if(is_a($id_or_email, 'WP_Comment')) {
+		$email = $id_or_email->comment_author_email;
+	}
+	# by WP_POST object
+	else if(is_a($id_or_email, 'WP_POST')) {
+		$id = $id_or_email->post_author;
+		$email = get_user_by('id', $id)->user_email;
+	}
+	# by gravatar md5 hash
+	else if(strlen($id_or_email) == 32 && ctype_xdigit($id_or_email)) {
 		$email = $id_or_email;
+	}
+	# by user email
+	else {
+		$email = get_user_by('email', $id_or_email)->user_email;
 	}
 
 	$base_url = plugin_dir_url( __DIR__ ) .'images/avatars/avatar';
