@@ -27,9 +27,11 @@ function yawsp_options_page() {
 		<ol>
 			<li>Disable the REST API endpoint wp-json/wp/v2/users to prevent the leakage of usernames</li>
 			<li>Disable author archvies completely so that e.g. /?author=1 does not yield a username.</li>
+			<li>Replace the author display name with the website tile (e.g. in RSS feeds).</li>
 			<li>Create an anti-spam honeypot: Set the "website" field for comments as an invisible field that must not be filled.</li>
 			<li>Log failed and successfull logins to the WordPress backend to log files.</li>
 			<li>Prevent users from editing source code files using the built-in file editor.</li>
+			<li>Add HTTP Security Headers.</li>
 		</ol>
 		<h4>Privacy Improvements</h4>
 		<ol>

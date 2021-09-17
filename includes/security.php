@@ -51,6 +51,21 @@ remove_filter('template_redirect', 'redirect_canonical');
 add_action('template_redirect', 'yawsp_disable_author_archives');
 
 /**
+ * Prevent the actual author display name from being displayed in the frontend.
+ * This removes the name e.g. from news posts and the RSS feed and replaces it
+ * with the website's title.
+ */
+function yawsp_replace_author_display_name($display_name) {
+	if(is_admin()) {
+		return $display_name;
+	} else {
+		return get_bloginfo();
+	}
+}
+add_filter('the_author', 'yawsp_replace_author_display_name');
+
+
+/**
  * Create an anti-spam honeypot.
  * 
  * Use the "website" field in a comment as honeypot. It is set to display:none via css, 
