@@ -21,7 +21,7 @@ function yawsp_logger($data, $file_path) {
 /**
  * Disable the REST API endpoint wp-json/wp/v2/users to prevent the leakage of usernames.
  */
-function yawsp_disable_users_endpoint_in_rest_api( $endpoints ) {
+function yawsp_disable_users_endpoint_in_rest_api($endpoints) {
 	if(isset($endpoints['/wp/v2/users'])) {
 		unset($endpoints['/wp/v2/users']);
 	}
@@ -124,5 +124,15 @@ function yawsp_enable_http_security_headers($headers) {
 	return $headers;
 }
 add_filter('wp_headers', 'yawsp_enable_http_security_headers');
+
+/**
+ * Add escaping for the_title() and the_content().
+ */
+# Make the function the_tile() use esc_html() to encode output
+add_filter('the_title', 'esc_html');
+
+# Make the function the_content() use wp_kses_post() to encode output
+# Do not use esc_html(), otherwise HTML markup (e.g. <p>) cannot be rendered properly
+add_filter('the_content', 'wp_kses_post');
 
 ?>
