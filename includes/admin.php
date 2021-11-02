@@ -23,7 +23,7 @@ function yawsp_options_page() {
 		<p>YAWSP is a minimal plugin for enhancing security and privacy of WordPress websites.</p>
 		<h3>Features</h3>
 		This plugin provides the following features.
-		<h4>Security Hardening</h4>
+		<h4>Security Hardenings</h4>
 		<ol>
 			<li>Disable the REST API endpoint wp-json/wp/v2/users to prevent the leakage of usernames</li>
 			<li>Disable author archvies completely so that e.g. /?author=1 does not yield a username.</li>
@@ -32,6 +32,7 @@ function yawsp_options_page() {
 			<li>Log failed and successfull logins to the WordPress backend to log files.</li>
 			<li>Prevent users from editing source code files using the built-in file editor.</li>
 			<li>Add HTTP Security Headers.</li>
+			<li>Add output escaping to the_title and the_content to prevent XSS</li>
 		</ol>
 		<h4>Privacy Improvements</h4>
 		<ol>
@@ -39,6 +40,18 @@ function yawsp_options_page() {
 			<li>Remove cookie consent field in comments so that no cookies are to be saved.</li>
 			<li>Replace a comment's IP address with "127.0.0.1" when the comment is approved or classified as spam.</li>
 			<li>Replace embedded YouTube videos with youtube-nocookie.com embedds.</li>
+		</ol>
+		<h4>Security through Obscurity</h4>
+		<ol>
+			<li>Remove Wordpress version information from ...</li>
+			<ul>
+				<li>... generator tag in HTML head..</li>
+				<li>... generator info in RSS feeds.</li>
+				<li>... script and stylesheet links (e.g. `abc.js?ver=1.0.1`).</li>
+			</ul>
+			<li>Remove links to the REST Api from HTML head and HTTP headers.</li>
+			<li>Remove shortlink from HTML head and HTTP headers</li>
+			<li>Remove links to `wlwmanifest.xml` and `xmlrpc.php?rsd` from HTML head.</li>
 		</ol>
 		<h3>Details</h3>
 		<p>The source code for this project is available on <a href="https://github.com/chrrel/yawsp">GitHub</a>.</p>
