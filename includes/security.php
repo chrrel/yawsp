@@ -21,7 +21,7 @@ function yawsp_logger($data, $file_path) {
 /**
  * Disable the REST API endpoint wp-json/wp/v2/users to prevent the leakage of usernames.
  */
-function yawsp_disable_users_endpoint_in_rest_api( $endpoints ) {
+function yawsp_disable_users_endpoint_in_rest_api($endpoints) {
 	if(isset($endpoints['/wp/v2/users'])) {
 		unset($endpoints['/wp/v2/users']);
 	}
