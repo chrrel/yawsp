@@ -64,6 +64,16 @@ function yawsp_replace_author_display_name($display_name) {
 }
 add_filter('the_author', 'yawsp_replace_author_display_name');
 
+/**
+ * Disable the user sitemap /wp-sitemap-users-1.xml to prevent the leakage of usernames.
+ */
+function yawsp_disable_user_sitemap($provider, $name) {
+	if ('users' === $name) {
+		return false;
+	}
+	return $provider;
+}
+add_filter('wp_sitemaps_add_provider', 'yawsp_disable_user_sitemap', 10, 2);
 
 /**
  * Create an anti-spam honeypot.
