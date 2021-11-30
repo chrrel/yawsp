@@ -141,4 +141,9 @@ add_filter('wp_headers', 'yawsp_enable_http_security_headers');
 # Make the function the_tile() use esc_html() to encode output
 add_filter('the_title', 'esc_html');
 
+/**
+ * Disable XML-RPC.
+ */
+add_filter('xmlrpc_enabled', '__return_false');
+
 ?>
