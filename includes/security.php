@@ -131,8 +131,4 @@ add_filter('wp_headers', 'yawsp_enable_http_security_headers');
 # Make the function the_tile() use esc_html() to encode output
 add_filter('the_title', 'esc_html');
 
-# Make the function the_content() use wp_kses_post() to encode output
-# Do not use esc_html(), otherwise HTML markup (e.g. <p>) cannot be rendered properly
-add_filter('the_content', 'wp_kses_post');
-
 ?>
