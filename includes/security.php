@@ -64,6 +64,16 @@ function yawsp_replace_author_display_name($display_name) {
 }
 add_filter('the_author', 'yawsp_replace_author_display_name');
 
+/**
+ * Disable the user sitemap /wp-sitemap-users-1.xml to prevent the leakage of usernames.
+ */
+function yawsp_disable_user_sitemap($provider, $name) {
+	if ('users' === $name) {
+		return false;
+	}
+	return $provider;
+}
+add_filter('wp_sitemaps_add_provider', 'yawsp_disable_user_sitemap', 10, 2);
 
 /**
  * Create an anti-spam honeypot.
@@ -131,8 +141,9 @@ add_filter('wp_headers', 'yawsp_enable_http_security_headers');
 # Make the function the_tile() use esc_html() to encode output
 add_filter('the_title', 'esc_html');
 
-# Make the function the_content() use wp_kses_post() to encode output
-# Do not use esc_html(), otherwise HTML markup (e.g. <p>) cannot be rendered properly
-add_filter('the_content', 'wp_kses_post');
+/**
+ * Disable XML-RPC.
+ */
+add_filter('xmlrpc_enabled', '__return_false');
 
 ?>

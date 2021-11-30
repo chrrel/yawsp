@@ -3,7 +3,7 @@
  * Plugin Name:       YAWSP - Yet Another Wordpress Security Plugin
  * Plugin URI:        https://github.com/chrrel/yawsp
  * Description:       A minimal plugin for enhancing security and privacy.
- * Version:           1.1
+ * Version:           1.2
  * Requires at least: 5.8.1
  * Author:            chrrel
  * Author URI:        https://github.com/chrrel
