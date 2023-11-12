@@ -41,8 +41,11 @@ function yawsp_replace_gravatar_with_own_images($url, $id_or_email, $args) {
 		$email = $id_or_email;
 	}
 	# by user email
-	else {
+	else if(filter_var($id_or_email, FILTER_VALIDATE_EMAIL)) {
 		$email = get_user_by('email', $id_or_email)->user_email;
+	}
+	else {
+		$email = "usernotfound@example.org";
 	}
 
 	$base_url = plugin_dir_url( __DIR__ ) .'images/avatars/avatar';
