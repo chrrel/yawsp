@@ -79,12 +79,14 @@ add_filter('wp_sitemaps_add_provider', 'yawsp_disable_user_sitemap', 10, 2);
  * Modify the login error message to prevent user enumeration based on different error messages 
  * for existing/non-existing user accounts.
  */
-function yawsp_disable_login_errors() {
+function yawsp_disable_login_errors($errors) {
+	if (str_contains($errors, 'Too many login attempts')) {
+		return $errors;
+	}
 	return sprintf(__('<strong>Error:</strong> The password you entered for the username %s is incorrect.'), '') 
 	.' <a href="' . wp_lostpassword_url() . '">' . __( 'Lost your password?' ) . '</a>';
 }
-add_filter('login_errors', 'yawsp_disable_login_errors');
-
+add_filter('login_errors', 'yawsp_disable_login_errors', 30, 1);
 
 /**
  * Disable custom CSS classes for author comments containing user names.
@@ -170,5 +172,39 @@ add_filter('the_title', 'esc_html');
  * Disable XML-RPC.
  */
 add_filter('xmlrpc_enabled', '__return_false');
+
+/**
+ * Limit login attempts for a user within a specified time frame.
+ *
+ * Count failed login attempts for each user by using transients and return an error message when
+ * the maximum number is reached.
+ * 
+ * Inspired by: https://phppot.com/wordpress/how-to-limit-login-attempts-in-wordpress/
+ *
+ */
+function yawsp_authenticate_limit_login_attempts($user, $username, $password) {
+	$username_hash = hash('sha256', $username);
+	$transient_name = 'login_attempts_' . $username_hash;
+	$max_attempts = 3;
+
+	$attempts = get_transient($transient_name) ?: 0;
+
+	if ($attempts < $max_attempts) {
+		# Reset the attempt count for successful logins, increment for failed ones
+		if ($user instanceof WP_User) {
+			$attempts = 0;
+		} else {
+			$attempts++;
+		}
+		set_transient($transient_name, $attempts, 600);
+		return $user;
+	} else {
+		$expiration_time = get_option('_transient_timeout_' . $transient_name);
+		$seconds_left = max(0, $expiration_time - time());
+		$message = "<strong>Error:</strong> Too many login attempts. Please wait $seconds_left seconds before trying again.";
+		return new WP_Error('yawsp_too_many_login_attempts', $message);
+	}
+}
+add_filter('authenticate', 'yawsp_authenticate_limit_login_attempts', 50, 3);
 
 ?>

@@ -17,6 +17,7 @@ YAWSP is a minimal plugin for enhancing the security and privacy of WordPress we
 * Prevent users from editing source code files using the built-in file editor.
 * Add HTTP Security Headers
 * Add output escaping to `the_title` to prevent XSS.
+* Limit login attempts to prevent brute-force attacks.
 
 ### Privacy Improvements
 * Gravatar (used to show avatars for comments) is disabled. Instead, local images are shown.
