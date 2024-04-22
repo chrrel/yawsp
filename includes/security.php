@@ -85,6 +85,21 @@ function yawsp_disable_login_errors() {
 }
 add_filter('login_errors', 'yawsp_disable_login_errors');
 
+
+/**
+ * Disable custom CSS classes for author comments containing user names.
+ * Example: comment-author-[USERNAME]
+ */
+function yawsp_disable_comment_author_class( $classes ) {
+	foreach($classes as $key => $class ) {
+		if(strstr($class, 'comment-author-')) {
+			unset($classes[$key]);
+		}
+	}
+	return $classes;
+}
+add_filter('comment_class', 'yawsp_disable_comment_author_class');
+
 /**
  * Create an anti-spam honeypot.
  * 
