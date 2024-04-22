@@ -10,6 +10,7 @@ YAWSP is a minimal plugin for enhancing security and privacy of WordPress websit
 * Disable author archvies completely so that e.g. `/?author=1` does not yield a username.
 * Disable the user sitemap to prevent the leakage of usernames.
 * Replace the author display name with the website tile (e.g. in RSS feeds).
+* Prevent user enumeration through login error messages.
 * Create an anti-spam honeypot: Set the "website" field for comments as an invisible field that must not be filled.
 * Log failed and successfull logins to the WordPress backend to log files.
 * Prevent users from editing source code files using the built-in file editor.

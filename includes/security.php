@@ -76,6 +76,16 @@ function yawsp_disable_user_sitemap($provider, $name) {
 add_filter('wp_sitemaps_add_provider', 'yawsp_disable_user_sitemap', 10, 2);
 
 /**
+ * Modify the login error message to prevent user enumeration based on different error messages 
+ * for existing/non-existing user accounts.
+ */
+function yawsp_disable_login_errors() {
+	return sprintf(__('<strong>Error:</strong> The password you entered for the username %s is incorrect.'), '') 
+	.' <a href="' . wp_lostpassword_url() . '">' . __( 'Lost your password?' ) . '</a>';
+}
+add_filter('login_errors', 'yawsp_disable_login_errors');
+
+/**
  * Create an anti-spam honeypot.
  * 
  * Use the "website" field in a comment as honeypot. It is set to display:none via css, 
