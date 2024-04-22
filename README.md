@@ -1,6 +1,6 @@
 # YAWSP - Yet Another Wordpress Security Plugin
 
-YAWSP is a minimal plugin for enhancing security and privacy of WordPress websites.
+YAWSP is a minimal plugin for enhancing the security and privacy of WordPress websites.
 
 ## Features
 
@@ -25,10 +25,7 @@ YAWSP is a minimal plugin for enhancing security and privacy of WordPress websit
 * Replace embedded YouTube videos with youtube-nocookie.com embedds.
 
 ### Security through Obscurity
-* Remove Wordpress version information from ...
-	* ... generator tag in HTML head.
-	* ... generator info in RSS feeds.
-	* ... script and stylesheet links (e.g. `abc.js?ver=1.0.1`).
+* Remove Wordpress version information from the generator tag in the HTML head, the generator info in RSS feeds and script and stylesheet links (e.g. `abc.js?ver=1.0.1`).
 * Remove links to the REST Api from HTML head and HTTP headers.
 * Remove shortlink from HTML head and HTTP headers.
 * Remove links to `wlwmanifest.xml` and `xmlrpc.php?rsd` from HTML head.
@@ -36,3 +33,4 @@ YAWSP is a minimal plugin for enhancing security and privacy of WordPress websit
 ## License
 This plugin is licensed under the [GNU General Public License v3.0](https://www.gnu.org/licenses/gpl-3.0).
 
+The source code for this project is available on [GitHub](https://github.com/chrrel/yawsp).
