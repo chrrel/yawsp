@@ -76,6 +76,33 @@ function yawsp_disable_user_sitemap($provider, $name) {
 add_filter('wp_sitemaps_add_provider', 'yawsp_disable_user_sitemap', 10, 2);
 
 /**
+ * Modify the login error message to prevent user enumeration based on different error messages 
+ * for existing/non-existing user accounts.
+ */
+function yawsp_disable_login_errors($errors) {
+	if (str_contains($errors, 'Too many login attempts')) {
+		return $errors;
+	}
+	return sprintf(__('<strong>Error:</strong> The password you entered for the username %s is incorrect.'), '') 
+	.' <a href="' . wp_lostpassword_url() . '">' . __( 'Lost your password?' ) . '</a>';
+}
+add_filter('login_errors', 'yawsp_disable_login_errors', 30, 1);
+
+/**
+ * Disable custom CSS classes for author comments containing user names.
+ * Example: comment-author-[USERNAME]
+ */
+function yawsp_disable_comment_author_class( $classes ) {
+	foreach($classes as $key => $class ) {
+		if(strstr($class, 'comment-author-')) {
+			unset($classes[$key]);
+		}
+	}
+	return $classes;
+}
+add_filter('comment_class', 'yawsp_disable_comment_author_class');
+
+/**
  * Create an anti-spam honeypot.
  * 
  * Use the "website" field in a comment as honeypot. It is set to display:none via css, 
@@ -101,7 +128,7 @@ add_filter('preprocess_comment','yawsp_create_spam_comment_honeypot');
  * Log failed login attempts to the WordPress backend.
  */
 function yawsp_login_failed_logger($username) {
-	yawsp_logger("$username - authentication failure for ".admin_url(), YAWSP_LOG_DIRECTORY . 'logins_failed.log');
+	yawsp_logger($username, YAWSP_LOG_DIRECTORY . 'logins_failed.log');
 }
 add_action('wp_login_failed', 'yawsp_login_failed_logger');
 
@@ -109,7 +136,7 @@ add_action('wp_login_failed', 'yawsp_login_failed_logger');
  * Log successful logins to the WordPress backend.
  */
 function yawsp_login_successful_logger($username) {
-	yawsp_logger("$username - login", YAWSP_LOG_DIRECTORY . 'logins_successfull.log');
+	yawsp_logger($username, YAWSP_LOG_DIRECTORY . 'logins_successful.log');
 }
 add_action('wp_login', 'yawsp_login_successful_logger');
 
@@ -136,14 +163,47 @@ function yawsp_enable_http_security_headers($headers) {
 add_filter('wp_headers', 'yawsp_enable_http_security_headers');
 
 /**
- * Add escaping for the_title() and the_content().
+ * Add escaping for the_title().
  */
-# Make the function the_tile() use esc_html() to encode output
 add_filter('the_title', 'esc_html');
 
 /**
  * Disable XML-RPC.
  */
 add_filter('xmlrpc_enabled', '__return_false');
+
+/**
+ * Limit login attempts for a user within a specified time frame.
+ *
+ * Count failed login attempts for each user by using transients and return an error message when
+ * the maximum number is reached.
+ * 
+ * Inspired by: https://phppot.com/wordpress/how-to-limit-login-attempts-in-wordpress/
+ *
+ */
+function yawsp_authenticate_limit_login_attempts($user, $username, $password) {
+	$username_hash = hash('sha256', $username);
+	$transient_name = 'login_attempts_' . $username_hash;
+	$max_attempts = 3;
+
+	$attempts = get_transient($transient_name) ?: 0;
+
+	if ($attempts < $max_attempts) {
+		# Reset the attempt count for successful logins, increment for failed ones
+		if ($user instanceof WP_User) {
+			$attempts = 0;
+		} else {
+			$attempts++;
+		}
+		set_transient($transient_name, $attempts, 600);
+		return $user;
+	} else {
+		$expiration_time = get_option('_transient_timeout_' . $transient_name);
+		$seconds_left = max(0, $expiration_time - time());
+		$message = "<strong>Error:</strong> Too many login attempts. Please wait $seconds_left seconds before trying again.";
+		return new WP_Error('yawsp_too_many_login_attempts', $message);
+	}
+}
+add_filter('authenticate', 'yawsp_authenticate_limit_login_attempts', 50, 3);
 
 ?>
