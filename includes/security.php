@@ -128,7 +128,7 @@ add_filter('preprocess_comment','yawsp_create_spam_comment_honeypot');
  * Log failed login attempts to the WordPress backend.
  */
 function yawsp_login_failed_logger($username) {
-	yawsp_logger("$username - authentication failure for ".admin_url(), YAWSP_LOG_DIRECTORY . 'logins_failed.log');
+	yawsp_logger($username, YAWSP_LOG_DIRECTORY . 'logins_failed.log');
 }
 add_action('wp_login_failed', 'yawsp_login_failed_logger');
 
@@ -136,7 +136,7 @@ add_action('wp_login_failed', 'yawsp_login_failed_logger');
  * Log successful logins to the WordPress backend.
  */
 function yawsp_login_successful_logger($username) {
-	yawsp_logger("$username - login", YAWSP_LOG_DIRECTORY . 'logins_successfull.log');
+	yawsp_logger($username, YAWSP_LOG_DIRECTORY . 'logins_successful.log');
 }
 add_action('wp_login', 'yawsp_login_successful_logger');
 
@@ -163,9 +163,8 @@ function yawsp_enable_http_security_headers($headers) {
 add_filter('wp_headers', 'yawsp_enable_http_security_headers');
 
 /**
- * Add escaping for the_title() and the_content().
+ * Add escaping for the_title().
  */
-# Make the function the_tile() use esc_html() to encode output
 add_filter('the_title', 'esc_html');
 
 /**
